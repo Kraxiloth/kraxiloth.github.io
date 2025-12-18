@@ -1,193 +1,287 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Primary favicon -->
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  
-  <!-- For modern browsers -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  
-  <!-- Android support -->
-  <link rel="manifest" href="/site.webmanifest">
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kraxiloth | Presence. Ritual. Echo.</title>
+  <title>Kraxiloth</title>
+
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #050505;
-      color: #e0e0e0;
+    :root{
+      --bg:#0b0d10;
+      --fg:#e6e6e6;
+      --muted:#9aa0a6;
+      --accent:#7fa7ff;
+      --rule:#1a1d22;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 2rem;
-      background: #0a0a0a;
-      border-bottom: 1px solid #333;
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:var(--bg);
+      color:var(--fg);
+      line-height:1.6;
     }
-    .brand {
-      font-size: 1.25rem;
+
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    section{
+      padding:4rem 1.5rem;
+      max-width:1100px;
+      margin:0 auto;
     }
-    .social-icons a {
-      margin-left: 1rem;
-      text-decoration: none;
-      color: #e0e0e0;
+
+    /* HERO */
+    .hero{
+      min-height:90vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
     }
-    .main-content {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding: 2rem 4rem;
+
+    .hero img{
+      width:220px;
+      max-width:70%;
+      margin-bottom:2rem;
     }
-    .arg-section, .music-section {
-      flex: 1 1 45%;
-      min-width: 280px;
-      margin-bottom: 2rem;
+
+    .hero h1{
+      letter-spacing:0.4em;
+      font-size:1.6rem;
+      margin-bottom:1rem;
     }
-    .arg-fragment {
-      border-left: 2px solid #5d4d7a;
-      padding-left: 1rem;
-      margin-bottom: 1.5rem;
+
+    .hero p{
+      font-size:1.1rem;
+      color:var(--muted);
+      margin-bottom:2.5rem;
     }
-    .arg-fragment h2 {
-      color: #5d4d7a;
-      font-size: 1.1rem;
+
+    .cta{
+      padding:0.75rem 2rem;
+      border:1px solid var(--accent);
+      background:transparent;
+      color:var(--fg);
+      text-transform:uppercase;
+      letter-spacing:0.15em;
+      cursor:pointer;
     }
-    .glyph {
-      font-family: monospace;
-      color: #6c6a67;
-      margin-top: 0.5rem;
+    .cta:hover{ background:var(--accent); color:#000; }
+
+    /* SECTIONS */
+    .music, .collective, .arg{ border-top:1px solid var(--rule); }
+
+    /* MUSIC */
+
+.spotify iframe{
+  width: 100%;
+  height: 360px;      /* 152 (compact) or ~352–380 (album/playlist) */
+  border: 0;
+  border-radius: 12px;
+  display: block;     /* removes tiny inline-gap weirdness */
+}
+
+.release-list{
+  list-style:none;
+  padding-left:0;
+  color:var(--muted);
+  font-size:0.95rem;
+}
+
+.release-list li{
+  margin-bottom:0.5rem;
+}
+
+.release-list a{
+  margin:0 0.25rem;
+}
+
+.other-transmissions {
+  margin-top: 2.5rem;
+}
+
+    .music h2{ margin-bottom:1rem; font-weight:500; }
+    .music p{ max-width:600px; color:var(--muted); margin-bottom:2rem; }
+
+    .music-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:2rem;
     }
-    .music-section iframe {
-      width: 100%;
-      height: 380px;
-      border: none;
-      border-radius: 12px;
+
+    .album-art{ max-width:320px; width:100%; height:auto; }
+    .spotify{ max-width:420px; }
+
+    @media (min-width:768px){
+      .music-grid{ grid-template-columns:auto 1fr; align-items:start; }
     }
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      font-size: 0.9rem;
-      background: #0a0a0a;
-      border-top: 1px solid #333;
-      color: #888;
+
+    /* COLLECTIVE */
+    .collective h2{ margin-bottom:2rem; font-weight:500; }
+
+    .member{
+      display:flex;
+      align-items:flex-start;
+      gap:1rem;
+      margin-bottom:1.75rem;
     }
-    @media (max-width: 768px) {
-      .main-content {
-        flex-direction: column;
-        padding: 1rem 2rem;
-      }
+
+    .member .glyph{
+      width:52px;
+      height:52px;
+      opacity:0.8;
+      flex-shrink:0;
     }
-  
-    .live-banner {
-      background: #5d4d7a;
-      color: #fff;
-      text-align: center;
-      padding: 0.5rem;
-      font-weight: bold;
+
+    .member-text strong{
+      display:block;
+      font-weight:600;
+      margin-bottom:0.15rem;
     }
-    .live-banner a {
-      color: white;
-      text-decoration: none;
+
+    .member-text span{
+      color:var(--muted);
+      font-size:0.95rem;
     }
-    </style>
+
+    /* ARG */
+    .arg{ color:var(--muted); }
+    details summary{ cursor:pointer; margin-bottom:1rem; }
+    details ul{ list-style:none; padding-left:1rem; }
+    details li{ margin-bottom:0.5rem; }
+
+    /* FOOTER */
+    footer{
+      border-top:1px solid var(--rule);
+      text-align:center;
+      padding:3rem 1.5rem;
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    footer .links a{ margin:0 0.75rem; }
+
+    .footer-monitor{
+      font-style:italic;
+      font-size:0.85rem;
+      color:rgba(255,255,255,0.45);
+      letter-spacing:0.02em;
+      margin-bottom:0.75rem;
+    }
+
+    .footer-monitor .faint{
+      color:rgba(255,255,255,0.18);
+      letter-spacing:0.08em;
+      margin-left:0.1em;
+    }
+  </style>
 </head>
+
 <body>
-  
-  <header>
-    <div class="brand">
-      Presence. Ritual. Echo.
-    </div>
-    <div class="social-icons">
-      <a href="https://twitch.tv/kraxiloth" target="_blank">Twitch</a>
-      <a href="https://youtube.com/@kraxiloth" target="_blank">YouTube</a>
-      <a href="https://discord.gg/JXsKMAVe7p" target="_blank">Discord</a>
-      <a href="https://ko-fi.com/kraxiloth" target="_blank">Ko-fi</a>
-    </div>
-  </header>
 
-  <div class="main-content">
-    <div class="arg-section">
-      <h2 style="margin-bottom:0;">
-  <span title="An ARG (Alternate Reality Game) is an interactive mystery that unfolds through hidden messages, cryptic clues, and real-time discoveries. Engage with the fragments to uncover the signal.">ARG Fragments</span>
-</h2>
-      <div class="arg-fragment">
-        <h2>Fragment I: The Fracture</h2>
-        <p>
-          A reflection that was not your own. A signal in the static. The whisper of the first glyph.
-        </p>
-        <p class="glyph">Trigger phrase: "i remember the fracture"</p>
-<p><a href="https://i.imgur.com/ofhQepO.png" target="_blank">View Fragment I</a></p>
-      </div>
-      <div class="arg-fragment">
-        <h2>Fragment II: Transmission Burn</h2>
-        <p>
-          The glyph deepens, drawn not in ink, but memory. Only those attuned through the first echo can feel its burn.
-        </p>
-      </div>
-      <div class="arg-fragment">
-        <h2 style="color: #444;">Fragments III–V</h2>
-        <p style="opacity: 0.5;">Access restricted. Alignment incomplete.</p>
-      </div>
-    </div>
+  <!-- HERO -->
+  <section class="hero">
+    <img src="Band logo 2026.png" alt="Kraxiloth sigil" />
+    <h1>KRAXILOTH</h1>
+    <p>Intent in. Sound out.</p>
+    <button class="cta" id="listenBtn" type="button">Listen</button>
+  </section>
 
-    <div class="music-section">
-      <h2>Music</h2>
-      <p><strong>Echoes From the Void (2025)</strong></p>
-      <iframe src="https://open.spotify.com/embed/album/7niPShKKvu89sfDpXEx8GR?utm_source=generator"
+  <!-- MUSIC -->
+  <section id="music" class="music">
+    <h2>Music</h2>
+    <p>
+      Echoes From the Void (2025)<br />
+      Debut full-length symphonic metal album.
+    </p>
+
+    <div class="music-grid">
+      <div class="spotify">
+        <iframe src="https://open.spotify.com/embed/album/7niPShKKvu89sfDpXEx8GR?utm_source=generator"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"></iframe>
+      </div>
     </div>
-  </div>
 
+<div class="other-transmissions">
+  <h3>Other releases</h3>
+  <ul class="release-list">
+<ul class="release-list">
+  <li>
+    Apex Predator (2025) —
+    <a href="https://open.spotify.com/album/4JLRxwZjfg3wCDM69ED2Ua?si=Ut8j9rTCS0W4mawlxCR89Q">Spotify</a> /
+    <a href="https://www.youtube.com/watch?v=QpHvKOR8OVU&list=PL-kPYtyCybFUElX-muIPO94u9yN1ykr6e">YouTube</a>
+  </li>
+  <li>
+    Terminal Drift (2025) —
+    <a href="https://open.spotify.com/album/0pGgRGfX8fGYTVpOUK8FNy?si=GSbvME-DRQ6pXETGVyFN0A">Spotify</a> / 
+    <a href="https://www.youtube.com/watch?v=uThnntklL-A&list=PL-kPYtyCybFWjT-6wrQu7rajb1SToF3tO">YouTube</a>
+  </li>
+</ul>
+  </ul>
+</div>
+
+
+  </section>
+
+  <!-- COLLECTIVE -->
+  <section class="collective">
+    <h2>The Collective</h2>
+
+    <div class="member">
+      <img class="glyph" src="operator-glyph.png" alt="" />
+      <div class="member-text">
+        <strong>The Operator (Human)</strong>
+        <span>Direction, composition, intent, final decisions.</span>
+      </div>
+    </div>
+
+    <div class="member">
+      <img class="glyph" src="voice-glyph.png" alt="" />
+      <div class="member-text">
+        <strong>The Voice (Suno)</strong>
+        <span>Voice &amp; generative exploration.</span>
+      </div>
+    </div>
+
+    <div class="member">
+      <img class="glyph" src="mind-glyph.png" alt="" />
+      <div class="member-text">
+        <strong>The Mind (ChatGPT)</strong>
+        <span>Structure, refinement, narrative cohesion.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARG -->
+  <section class="arg">
+    <details>
+      <summary>Signal Fragments (for the attuned)</summary>
+      <ul>
+        <li>Fragment I: The Fracture</li>
+        <li>Fragment II: Transmission Burn</li>
+        <li>Fragments III–V [restricted]</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
-    You are already part of the signal.
+    <p class="footer-monitor">We will continue to monitor… <span class="faint">you</span></p>
+    <div class="links">
+      <a href="https://open.spotify.com/artist/1FZyBVkh3swMiIOKlVaV6U?si=KFu2O86QTBqhdxs-ivsH7w">Spotify</a>
+      <a href="https://www.youtube.com/@Kraxiloth">YouTube</a>
+    </div>
   </footer>
 
-<script>
-  fetch('https://signal-monitor.kraxiloth.workers.dev/')
-    .then(response => response.json())
-    .then(data => {
-      if (data.live) {
-        const banner = document.createElement('div');
-        banner.innerHTML = `
-          <div style="
-            background:#5d4d7a;
-            color:white;
-            text-align:center;
-            padding:0.5rem;
-            font-weight:bold;
-          ">
-            <a href="https://twitch.tv/kraxiloth" target="_blank" style="color:white; text-decoration:none;">
-              🔴 Kraxiloth is LIVE. Join the ritual!
-            </a>
-          </div>
-        `;
-        document.body.insertBefore(banner, document.body.firstChild);
-      }
-    })
-    .catch(err => console.error("Twitch status check failed:", err));
-</script>
-
-
-  <section>
-    <h2 style="text-align:center; color:#5d4d7a;">Signal Echoes</h2>
-    <div style="display:flex; justify-content:center; margin-bottom:2rem;">
-      <a class="twitter-timeline" data-theme="dark" data-tweet-limit="3" href="https://twitter.com/Kraxiloth">Tweets by @Kraxiloth</a>
-    </div>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <p style="text-align:center; font-size:0.9rem;">
-      <a href="https://twitter.com/Kraxiloth" target="_blank" style="color:#aaa;">
-        Visit the signal feed on X if the embedded timeline doesn't appear.
-      </a>
-    </p>
-  </section>
+  <script>
+    document.getElementById("listenBtn").addEventListener("click", () => {
+      document.getElementById("music").scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
 
 </body>
 </html>

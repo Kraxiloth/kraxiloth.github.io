@@ -111,14 +111,18 @@
             lifeElement.textContent = lifeValue < 1 ? 'DD' : lifeValue;
         }
 
-        function increment(player) {
-            if (player === 1) {
-                life1++;
-            } else {
-                life2++;
-            }
-            updateDisplay(player);
-        }
+		function increment(player) {
+			if (player === 1) {
+				if (life1 < 20) {     // ← only increase if below 20
+					life1++;
+				}
+			} else {
+				if (life2 < 20) {
+					life2++;
+				}
+			}
+			updateDisplay(player);
+		}
 
         function decrement(player) {
             if (player === 1) {

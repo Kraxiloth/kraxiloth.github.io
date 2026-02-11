@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCG Life Counter</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .player {
+            background-color: #1e1e1e;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1 1 200px;
+            max-width: 300px;
+        }
+
+        .player h2 {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+
+        .life {
+            font-size: 48px;
+            margin: 10px 0;
+            min-height: 60px;
+        }
+
+        button {
+            background-color: #333333;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #555555;
+        }
+
+        #reset {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .player {
+                flex: 1 1 100%;
+                max-width: none;
+            }
+
+            .life {
+                font-size: 36px;
+            }
+
+            button {
+                padding: 8px 16px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="player">
+            <h2>Player 1</h2>
+            <div class="life" id="life1">20</div>
+            <button onclick="decrement(1)">-</button>
+            <button onclick="increment(1)">+</button>
+        </div>
+        <div class="player">
+            <h2>Player 2</h2>
+            <div class="life" id="life2">20</div>
+            <button onclick="decrement(2)">-</button>
+            <button onclick="increment(2)">+</button>
+        </div>
+    </div>
+    <button id="reset" onclick="resetGame()">Reset</button>
+
+    <script>
+        let life1 = 20;
+        let life2 = 20;
+
+        function updateDisplay(player) {
+            const lifeElement = document.getElementById(`life${player}`);
+            const lifeValue = player === 1 ? life1 : life2;
+            lifeElement.textContent = lifeValue < 1 ? 'DD' : lifeValue;
+        }
+
+        function increment(player) {
+            if (player === 1) {
+                life1++;
+            } else {
+                life2++;
+            }
+            updateDisplay(player);
+        }
+
+        function decrement(player) {
+            if (player === 1) {
+                life1--;
+            } else {
+                life2--;
+            }
+            updateDisplay(player);
+        }
+
+        function resetGame() {
+            life1 = 20;
+            life2 = 20;
+            updateDisplay(1);
+            updateDisplay(2);
+        }
+    </script>
+</body>
+</html>

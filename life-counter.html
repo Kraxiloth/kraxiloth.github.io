@@ -43,6 +43,13 @@
 			flex-direction: column;
 			align-items: center;
 			gap: 15px;
+			max-height: 90vh;
+			overflow-y: auto;
+			width: 90vw;
+			max-width: 400px;
+			background-color: #1e1e1e;
+			border-radius: 12px;
+			padding: 20px;
 		}
 
 		.modal-image {
@@ -79,6 +86,101 @@
 
 		.modal-change:hover {
 			background-color: #666666;
+		}
+		
+		.browser-title {
+			margin: 0;
+			font-size: 18px;
+			color: #ffffff;
+			text-align: center;
+		}
+		
+		.browser-controls {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			width: 100%;
+		}
+		
+		#avatar-search {
+			width: 100%;
+			padding: 10px;
+			background-color: #2a2a2a;
+			border: 1px solid #444444;
+			border-radius: 8px;
+			color: #ffffff;
+			font-size: 16px;
+			box-sizing: border-box;
+		}
+		
+		#avatar-search::placeholder {
+			color: #666666;
+		}
+		
+		.finish-toggle {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 14px;
+			color: #aaaaaa;
+			cursor: pointer;
+		}
+		
+		.avatar-list {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+			max-height: 40vh;
+			overflow-y: auto;
+		}
+		
+		.avatar-list-item {
+			background-color: #2a2a2a;
+			border: 1px solid #444444;
+			border-radius: 8px;
+			padding: 10px 14px;
+			cursor: pointer;
+			font-size: 15px;
+			color: #ffffff;
+			text-align: left;
+		}
+		
+		.avatar-list-item:hover {
+			background-color: #3a3a3a;
+			border-color: #666666;
+		}
+		
+		.avatar-preview {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 12px;
+			width: 100%;
+		}
+		
+		.avatar-preview img {
+			max-width: 60vw;
+			max-height: 50vh;
+			aspect-ratio: 5 / 7;
+			border-radius: 10px;
+			object-fit: cover;
+		}
+		
+		.modal-cancel {
+			background-color: #333333;
+			color: #aaaaaa;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 8px;
+			font-size: 15px;
+			cursor: pointer;
+		}
+		
+		.browser-loading {
+			color: #666666;
+			text-align: center;
+			padding: 20px;
 		}
 		
 		.container {
@@ -287,10 +389,32 @@
 	</div>
 	
 	<div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
-		<div class="modal-content">
+		<div class="modal-content" onclick="event.stopPropagation()">
 			<button class="modal-close" onclick="closeModal()">✕</button>
-			<img class="modal-image" id="modal-image" src="" alt="Avatar">
-			<button class="modal-change" onclick="openAvatarBrowser()">Change Avatar</button>
+			
+			<div id="modal-view-card">
+				<img class="modal-image" id="modal-image" src="" alt="Avatar">
+				<button class="modal-change" onclick="openAvatarBrowser()">Change Avatar</button>
+			</div>
+
+			<div id="modal-avatar-browser" style="display:none">
+				<h3 class="browser-title">Select Avatar</h3>
+				<div class="browser-controls">
+					<input type="text" id="avatar-search" placeholder="Search avatars..." oninput="filterAvatars()">
+					<label class="finish-toggle">
+						<input type="checkbox" id="show-all-finishes" onchange="filterAvatars()">
+						Show all finishes
+					</label>
+				</div>
+				<div id="avatar-list" class="avatar-list">
+					<div class="browser-loading">Loading avatars...</div>
+				</div>
+				<div id="avatar-preview" class="avatar-preview" style="display:none">
+					<img id="preview-image" src="" alt="Preview">
+					<button class="modal-change" onclick="confirmAvatar()">Select This Avatar</button>
+					<button class="modal-cancel" onclick="clearPreview()">Back</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -530,6 +654,169 @@
 
 	function closeModal() {
 		document.getElementById('modal-overlay').classList.remove('active');
+	}
+	
+	// Avatar browser state
+	const IMAGE_BASE_URL = 'https://d27a44hjr9gen3.cloudfront.net/cards/';
+	const API_URL = 'https://api.sorcerytcg.com/api/cards';
+	const CACHE_KEY = 'avatarCache';
+	const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+	let avatarList = [];
+	let filteredAvatars = [];
+	let currentAvatarPlayerIndex = null;
+	let selectedAvatarSlug = null;
+
+	// Open avatar browser for a specific player
+	function openAvatarBrowser(playerIndex) {
+		if (playerIndex !== undefined) {
+			currentAvatarPlayerIndex = playerIndex;
+		}
+		document.getElementById('modal-view-card').style.display = 'none';
+		document.getElementById('modal-avatar-browser').style.display = 'flex';
+		document.getElementById('modal-avatar-browser').style.flexDirection = 'column';
+		clearPreview();
+		
+		if (avatarList.length > 0) {
+			renderAvatarList(avatarList);
+		} else {
+			loadAvatars();
+		}
+	}
+
+	// Load avatars from cache or API
+	async function loadAvatars() {
+		document.getElementById('avatar-list').innerHTML = '<div class="browser-loading">Loading avatars...</div>';
+		
+		// Check cache first
+		try {
+			const cached = localStorage.getItem(CACHE_KEY);
+			if (cached) {
+				const { data, timestamp } = JSON.parse(cached);
+				if (Date.now() - timestamp < CACHE_DURATION) {
+					avatarList = data;
+					renderAvatarList(avatarList);
+					return;
+				}
+			}
+		} catch (error) {
+			console.log('Cache read failed, fetching fresh data');
+		}
+
+		// Fetch from API
+		try {
+			const response = await fetch(API_URL);
+			const cards = await response.json();
+			
+			// Filter to avatar cards only and extract variants
+			avatarList = [];
+			cards.forEach(card => {
+				if (card.guardian && card.guardian.type === 'Avatar') {
+					card.sets.forEach(set => {
+						set.variants.forEach(variant => {
+							avatarList.push({
+								name: card.name,
+								set: set.name,
+								slug: variant.slug,
+								finish: variant.finish,
+								artist: variant.artist
+							});
+						});
+					});
+				}
+			});
+
+			// Cache the results
+			try {
+				localStorage.setItem(CACHE_KEY, JSON.stringify({
+					data: avatarList,
+					timestamp: Date.now()
+				}));
+			} catch (error) {
+				console.log('Cache write failed');
+			}
+
+			renderAvatarList(avatarList);
+		} catch (error) {
+			document.getElementById('avatar-list').innerHTML = 
+				'<div class="browser-loading">Failed to load avatars. Please check your connection.</div>';
+		}
+	}
+
+	// Render the avatar list based on current filters
+	function renderAvatarList(avatars) {
+		const searchTerm = document.getElementById('avatar-search').value.toLowerCase();
+		const showAllFinishes = document.getElementById('show-all-finishes').checked;
+		
+		filteredAvatars = avatars.filter(avatar => {
+			const matchesSearch = avatar.name.toLowerCase().includes(searchTerm) ||
+								avatar.set.toLowerCase().includes(searchTerm);
+			const matchesFinish = showAllFinishes || avatar.finish === 'Standard';
+			return matchesSearch && matchesFinish;
+		});
+
+		if (filteredAvatars.length === 0) {
+			document.getElementById('avatar-list').innerHTML = 
+				'<div class="browser-loading">No avatars found.</div>';
+			return;
+		}
+
+		document.getElementById('avatar-list').innerHTML = filteredAvatars
+			.map((avatar, index) => `
+				<button class="avatar-list-item" onclick="previewAvatar(${index})">
+					${avatar.name} - ${avatar.set}
+					${avatar.finish !== 'Standard' ? `<span style="color:#aaaaaa"> (${avatar.finish})</span>` : ''}
+				</button>
+			`)
+			.join('');
+	}
+
+	// Filter avatars based on search input
+	function filterAvatars() {
+		renderAvatarList(avatarList);
+	}
+
+	// Preview a selected avatar
+	function previewAvatar(filteredIndex) {
+		const avatar = filteredAvatars[filteredIndex];
+		selectedAvatarSlug = avatar.slug;
+		
+		const previewImg = document.getElementById('preview-image');
+		previewImg.src = `${IMAGE_BASE_URL}${avatar.slug}.png`;
+		
+		document.getElementById('avatar-list').style.display = 'none';
+		document.getElementById('avatar-preview').style.display = 'flex';
+		document.getElementById('browser-controls') ;
+	}
+
+	// Clear preview and go back to list
+	function clearPreview() {
+		selectedAvatarSlug = null;
+		document.getElementById('avatar-preview').style.display = 'none';
+		document.getElementById('avatar-list').style.display = 'flex';
+		document.getElementById('avatar-list').style.flexDirection = 'column';
+		document.getElementById('avatar-search').value = '';
+		renderAvatarList(avatarList);
+	}
+
+	// Confirm avatar selection
+	function confirmAvatar() {
+		if (selectedAvatarSlug === null || currentAvatarPlayerIndex === null) return;
+		
+		players[currentAvatarPlayerIndex].avatar = selectedAvatarSlug;
+		
+		// Update the avatar card image directly
+		const avatarCard = document.getElementById(`avatar${currentAvatarPlayerIndex + 1}`);
+		let img = avatarCard.querySelector('img');
+		if (!img) {
+			img = document.createElement('img');
+			img.onerror = function() { this.style.display = 'none'; };
+			avatarCard.appendChild(img);
+		}
+		img.style.display = '';
+		img.src = `${IMAGE_BASE_URL}${selectedAvatarSlug}.png`;
+		
+		closeModal();
 	}
 	
 	// Initialise the app

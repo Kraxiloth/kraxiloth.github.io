@@ -83,6 +83,7 @@
 			border-radius: 8px;
 			font-size: 16px;
 			cursor: pointer;
+			align-self: center;
 		}
 
 		.modal-change:hover {
@@ -401,7 +402,7 @@
 			<div id="modal-avatar-browser" style="display:none">
 				<h3 class="browser-title">Select Avatar</h3>
 				<div class="browser-controls">
-					<input type="text" id="avatar-search" placeholder="Search avatars..." oninput="filterAvatars()">
+					<input type="text" id="avatar-search" placeholder="Search avatars..." oninput="handleSearchInput()">
 					<label class="finish-toggle">
 						<input type="checkbox" id="show-all-finishes" onchange="filterAvatars()">
 						Show all finishes
@@ -422,6 +423,9 @@
     <script>
 
 	function createPlayerPanel(index, player) {
+		const avatarSrc = player.avatar 
+			? `${IMAGE_BASE_URL}${player.avatar}.png`
+			: 'bet-sorcerer-b-s.webp';
 		const num = index + 1;
 		const rotation = index === 1 ? 'style="transform: rotate(180deg)"' : '';
 		return `
@@ -429,7 +433,7 @@
 				<h2 class="player-name" id="name${num}" onclick="renamePlayer(${index})">${player.name}</h2>
 				<div class="player-avatar">
 					<div class="avatar-card" id="avatar${num}" onclick="openModal(${index})">
-						<img src="bet-sorcerer-b-s.webp" alt="Avatar" onerror="this.style.display='none'">
+						<img src="${avatarSrc}" alt="Avatar" onerror="this.style.display='none'">
 						<div class="avatar-initial" id="avatar-initial${num}">${player.name.charAt(0).toUpperCase()}</div>
 					</div>
 				</div>
@@ -643,14 +647,20 @@
 	
 	// Modal shenaningans
 	function openModal(playerIndex) {
-		const img = document.getElementById(`avatar${playerIndex + 1}`).querySelector('img');
+		currentAvatarPlayerIndex = playerIndex;
+		const avatarCard = document.getElementById(`avatar${playerIndex + 1}`);
+		const img = avatarCard.querySelector('img');
 		const modalImage = document.getElementById('modal-image');
-		if (img) {
+		if (img && img.style.display !== 'none') {
 			modalImage.src = img.src;
 		} else {
 			modalImage.src = '';
 		}
 		document.getElementById('modal-overlay').classList.add('active');
+		document.getElementById('modal-view-card').style.display = 'flex';
+		document.getElementById('modal-view-card').style.flexDirection = 'column';
+		document.getElementById('modal-view-card').style.alignItems = 'center';
+		document.getElementById('modal-avatar-browser').style.display = 'none';
 	}
 
 	function closeModal() {
@@ -755,8 +765,14 @@
 	}
 
 	// Filter avatars based on search input
+	
 	function filterAvatars() {
 		renderAvatarList(avatarList);
+	}
+
+	function handleSearchInput() {
+		clearPreview();
+		filterAvatars();
 	}
 
 	// Preview a selected avatar
@@ -769,7 +785,6 @@
 		
 		document.getElementById('avatar-list').style.display = 'none';
 		document.getElementById('avatar-preview').style.display = 'flex';
-		document.getElementById('browser-controls') ;
 	}
 
 	// Clear preview and go back to list
@@ -788,11 +803,15 @@
 		
 		players[currentAvatarPlayerIndex].avatar = selectedAvatarSlug;
 		
-		// Update the avatar card image directly
 		const avatarCard = document.getElementById(`avatar${currentAvatarPlayerIndex + 1}`);
 		let img = avatarCard.querySelector('img');
 		if (!img) {
 			img = document.createElement('img');
+			img.style.position = 'absolute';
+			img.style.zIndex = '1';
+			img.style.width = '100%';
+			img.style.height = '100%';
+			img.style.objectFit = 'cover';
 			img.onerror = function() { this.style.display = 'none'; };
 			avatarCard.appendChild(img);
 		}

@@ -414,7 +414,7 @@
 				<div id="avatar-preview" class="avatar-preview" style="display:none">
 					<img id="preview-image" src="" alt="Preview">
 					<button class="modal-change" onclick="confirmAvatar()">Select This Avatar</button>
-					<button class="modal-cancel" onclick="clearPreview()">Back</button>
+					<button class="modal-cancel" onclick="backToList()">Back</button>
 				</div>
 			</div>
 		</div>
@@ -793,8 +793,12 @@
 		document.getElementById('avatar-preview').style.display = 'none';
 		document.getElementById('avatar-list').style.display = 'flex';
 		document.getElementById('avatar-list').style.flexDirection = 'column';
-		document.getElementById('avatar-search').value = '';
 		renderAvatarList(avatarList);
+	}
+	
+	function backToList() {
+		document.getElementById('avatar-search').value = '';
+		clearPreview();
 	}
 
 	// Confirm avatar selection

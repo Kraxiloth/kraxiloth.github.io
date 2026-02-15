@@ -399,10 +399,10 @@
 				<button class="modal-change" onclick="openAvatarBrowser()">Change Avatar</button>
 			</div>
 
-			<div id="modal-avatar-browser" style="display:none">
+			<div id="modal-avatar-browser" style="display:none" onclick="event.stopPropagation()>
 				<h3 class="browser-title">Select Avatar</h3>
 				<div class="browser-controls">
-					<input type="text" id="avatar-search" placeholder="Search avatars..." oninput="handleSearchInput()">
+					<input type="text" id="avatar-search" placeholder="Search avatars..." oninput="handleSearchInput() onclick="event.stopPropagation()">
 					<label class="finish-toggle">
 						<input type="checkbox" id="show-all-finishes" onchange="filterAvatars()">
 						Show all finishes

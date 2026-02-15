@@ -50,6 +50,7 @@
 			background-color: #1e1e1e;
 			border-radius: 12px;
 			padding: 20px;
+			box-sizing: border-box;
 		}
 
 		.modal-image {
@@ -703,28 +704,10 @@
 			console.log('Cache read failed, fetching fresh data');
 		}
 
-		// Fetch from API
+		// Fetch from local JSON file
 		try {
-			const response = await fetch(API_URL);
-			const cards = await response.json();
-			
-			// Filter to avatar cards only and extract variants
-			avatarList = [];
-			cards.forEach(card => {
-				if (card.guardian && card.guardian.type === 'Avatar') {
-					card.sets.forEach(set => {
-						set.variants.forEach(variant => {
-							avatarList.push({
-								name: card.name,
-								set: set.name,
-								slug: variant.slug,
-								finish: variant.finish,
-								artist: variant.artist
-							});
-						});
-					});
-				}
-			});
+			const response = await fetch('avatars.json');
+			avatarList = await response.json();
 
 			// Cache the results
 			try {
@@ -739,7 +722,7 @@
 			renderAvatarList(avatarList);
 		} catch (error) {
 			document.getElementById('avatar-list').innerHTML = 
-				'<div class="browser-loading">Failed to load avatars. Please check your connection.</div>';
+				'<div class="browser-loading">Failed to load avatar list.</div>';
 		}
 	}
 

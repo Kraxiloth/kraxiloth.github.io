@@ -1,0 +1,568 @@
+/* =============================================================================
+   BASE
+   ============================================================================= */
+
+html, body {
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+
+/* =============================================================================
+   GLOBAL BUTTONS
+   ============================================================================= */
+
+.global-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    padding: 0 10px;
+    flex-shrink: 0;
+}
+
+.settings-btn {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.new-turn-btn {
+    background-color: #2c5f2e;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    flex: 1;
+    max-width: 200px;
+}
+
+.new-turn-btn:hover {
+    background-color: #3d7a40;
+}
+
+.reset-btn {
+    background-color: #5f2c2c;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.reset-btn:hover {
+    background-color: #7a3d3d;
+}
+
+
+/* =============================================================================
+   PLAYER PANEL
+   ============================================================================= */
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
+    gap: 20px;
+}
+
+.player {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1 1 300px;
+    max-width: 360px;
+    display: grid;
+    grid-template-columns: 1fr 45%;
+    grid-template-rows: auto 1fr;
+    column-gap: 10px;
+    row-gap: 10px;
+    align-items: stretch;
+}
+
+.player-name {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    font-size: 20px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.player-avatar {
+    grid-column: 2;
+    grid-row: 1 / 3;
+}
+
+.player-life {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.player-life .section {
+    margin: 0;
+}
+
+.player-mana {
+    grid-column: 1 / 3;
+}
+
+.player-threshold {
+    grid-column: 1 / 3;
+}
+
+.avatar-card {
+    width: 100%;
+    aspect-ratio: 5 / 7;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid #444444;
+    position: relative;
+}
+
+.avatar-initial {
+    font-size: 48px;
+    color: #666666;
+    font-weight: bold;
+    position: absolute;
+    z-index: 0;
+}
+
+.avatar-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 1;
+}
+
+.section {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+}
+
+.section h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: #aaaaaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.subsection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 6px 0;
+}
+
+.subsection span {
+    font-size: 14px;
+    color: #cccccc;
+    width: 60px;
+    text-align: left;
+}
+
+.value {
+    font-size: 48px;
+    margin: 10px 0;
+    min-height: 60px;
+    line-height: 60px;
+    overflow: hidden;
+}
+
+.value.small {
+    font-size: 18px;
+    min-height: unset;
+    margin: 0;
+    width: 30px;
+    text-align: center;
+    line-height: normal;
+}
+
+.life-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.life-btn {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 28px;
+    cursor: pointer;
+    flex: 1;
+    padding: 12px 0;
+    min-height: 56px;
+}
+
+.life-btn:hover {
+    background-color: #555555;
+}
+
+/* Unused placeholders retained for future use */
+.player-header {}
+.player-initial {}
+.button-row {}
+.player-top {}
+.player-left {}
+.player-right {}
+
+@media (max-width: 600px) {
+    .section h3 {
+        font-size: 14px;
+    }
+
+    .subsection span {
+        font-size: 12px;
+    }
+
+    .value.small {
+        font-size: 16px;
+    }
+}
+
+
+/* =============================================================================
+   MODAL - SHARED
+   ============================================================================= */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+    overflow-x: hidden;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    max-height: 90vh;
+    overflow-y: auto;
+    width: 90vw;
+    max-width: 400px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.modal-change {
+    background-color: #444444;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.modal-change:hover {
+    background-color: #666666;
+}
+
+.modal-cancel {
+    background-color: #333333;
+    color: #aaaaaa;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.browser-title {
+    margin: 0;
+    font-size: 18px;
+    color: #ffffff;
+    text-align: center;
+}
+
+
+/* =============================================================================
+   MODAL - AVATAR CARD VIEW
+   ============================================================================= */
+
+.modal-image {
+    max-width: calc(90vw - 40px);
+    max-height: 70vh;
+    aspect-ratio: 5 / 7;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+#modal-view-card .modal-change {
+    margin-top: 20px;
+}
+
+
+/* =============================================================================
+   MODAL - AVATAR BROWSER
+   ============================================================================= */
+
+.browser-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+#avatar-search {
+    width: 100%;
+    padding: 10px;
+    background-color: #2a2a2a;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#avatar-search::placeholder {
+    color: #666666;
+}
+
+.finish-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #aaaaaa;
+    cursor: pointer;
+}
+
+.avatar-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+.avatar-list-item {
+    background-color: #2a2a2a;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #ffffff;
+    text-align: left;
+}
+
+.avatar-list-item:hover {
+    background-color: #3a3a3a;
+    border-color: #666666;
+}
+
+.avatar-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.avatar-preview img {
+    max-width: 60vw;
+    max-height: 50vh;
+    aspect-ratio: 5 / 7;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.browser-loading {
+    color: #666666;
+    text-align: center;
+    padding: 20px;
+}
+
+
+/* =============================================================================
+   MODAL - SETTINGS
+   ============================================================================= */
+
+.settings-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.settings-row label {
+    font-size: 14px;
+    color: #aaaaaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.settings-row select {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+}
+
+
+/* =============================================================================
+   MODAL - DICE ROLLER
+   ============================================================================= */
+
+.dice-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.dice-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 10px 14px;
+}
+
+.dice-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    width: 40px;
+}
+
+.dice-count-btn {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 22px;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+}
+
+.dice-count-btn:hover {
+    background-color: #555555;
+}
+
+.dice-count {
+    font-size: 22px;
+    font-weight: bold;
+    width: 30px;
+    text-align: center;
+}
+
+.dice-results {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#dice-results .new-turn-btn {
+    align-self: center;
+}
+
+.dice-result-row {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dice-result-type {
+    font-size: 14px;
+    color: #aaaaaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.dice-result-values {
+    font-size: 18px;
+    color: #ffffff;
+}
+
+.dice-result-total {
+    font-size: 14px;
+    color: #aaaaaa;
+}
+
+.dice-grand-total {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+    padding: 10px;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+}

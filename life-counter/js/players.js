@@ -34,51 +34,41 @@ function createPlayerPanel(index, player) {
                 <div class="section">
                     <h3>Life</h3>
                     <div class="life-controls">
-                        <button class="life-btn" onclick="adjustLife(${index}, -1)">−</button>
+                        <button class="life-btn" onclick="adjustLife(${index}, -1)">&minus;</button>
                         <div class="value" id="life${num}">${player.life}</div>
                         <button class="life-btn" onclick="adjustLife(${index}, 1)">+</button>
                     </div>
                 </div>
             </div>
             <div class="player-mana section">
-                <h3>Mana</h3>
-                <div class="value" id="mana${num}">${player.mana} / ${player.maxMana}</div>
-                <div class="subsection">
-                    <span>Current</span>
-                    <button onclick="adjustMana(${index}, 'current', -1)">-</button>
-                    <button onclick="adjustMana(${index}, 'current', 1)">+</button>
-                </div>
-                <div class="subsection">
-                    <span>Maximum</span>
-                    <button onclick="adjustMana(${index}, 'max', -1)">-</button>
-                    <button onclick="adjustMana(${index}, 'max', 1)">+</button>
+                <h3>Mana (Current / Maximum)</h3>
+                <div class="mana-controls">
+                    <button class="mana-btn" onclick="adjustMana(${index}, 'current', -1)">&minus;</button>
+                    <button class="mana-btn" onclick="adjustMana(${index}, 'current', 1)">+</button>
+                    <div class="value mana-value" id="mana${num}">${player.mana} / ${player.maxMana}</div>
+                    <button class="mana-btn" onclick="adjustMana(${index}, 'max', -1)">&minus;</button>
+                    <button class="mana-btn" onclick="adjustMana(${index}, 'max', 1)">+</button>
                 </div>
             </div>
             <div class="player-threshold section">
                 <h3>Threshold</h3>
-                <div class="subsection">
-                    <span>Air</span>
-                    <button onclick="adjustThreshold(${index}, 'air', -1)">-</button>
-                    <div class="value small" id="threshold-air${num}">${player.threshold.air}</div>
-                    <button onclick="adjustThreshold(${index}, 'air', 1)">+</button>
-                </div>
-                <div class="subsection">
-                    <span>Fire</span>
-                    <button onclick="adjustThreshold(${index}, 'fire', -1)">-</button>
-                    <div class="value small" id="threshold-fire${num}">${player.threshold.fire}</div>
-                    <button onclick="adjustThreshold(${index}, 'fire', 1)">+</button>
-                </div>
-                <div class="subsection">
-                    <span>Earth</span>
-                    <button onclick="adjustThreshold(${index}, 'earth', -1)">-</button>
-                    <div class="value small" id="threshold-earth${num}">${player.threshold.earth}</div>
-                    <button onclick="adjustThreshold(${index}, 'earth', 1)">+</button>
-                </div>
-                <div class="subsection">
-                    <span>Water</span>
-                    <button onclick="adjustThreshold(${index}, 'water', -1)">-</button>
-                    <div class="value small" id="threshold-water${num}">${player.threshold.water}</div>
-                    <button onclick="adjustThreshold(${index}, 'water', 1)">+</button>
+                <div class="threshold-grid">
+                    <button class="threshold-pill" onclick="openThresholdPopup(event, ${index}, 'air')">
+                        <img src="res/air.png" alt="Air" class="element-icon">
+                        <span id="threshold-air${num}">${player.threshold.air}</span>
+                    </button>
+                    <button class="threshold-pill" onclick="openThresholdPopup(event, ${index}, 'fire')">
+                        <img src="res/fire.png" alt="Fire" class="element-icon">
+                        <span id="threshold-fire${num}">${player.threshold.fire}</span>
+                    </button>
+                    <button class="threshold-pill" onclick="openThresholdPopup(event, ${index}, 'earth')">
+                        <img src="res/earth.png" alt="Earth" class="element-icon">
+                        <span id="threshold-earth${num}">${player.threshold.earth}</span>
+                    </button>
+                    <button class="threshold-pill" onclick="openThresholdPopup(event, ${index}, 'water')">
+                        <img src="res/water.png" alt="Water" class="element-icon">
+                        <span id="threshold-water${num}">${player.threshold.water}</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -97,7 +87,7 @@ function updateDisplay(playerIndex) {
     const player = players[playerIndex];
     const num = playerIndex + 1;
     document.getElementById(`name${num}`).textContent = player.name;
-    document.getElementById(`life${num}`).textContent = player.life < 1 ? '💔' : player.life;
+    document.getElementById(`life${num}`).textContent = player.life < 1 ? '\u{1F494}' : player.life;
     document.getElementById(`mana${num}`).textContent = `${player.mana} / ${player.maxMana}`;
     document.getElementById(`threshold-air${num}`).textContent = player.threshold.air;
     document.getElementById(`threshold-fire${num}`).textContent = player.threshold.fire;

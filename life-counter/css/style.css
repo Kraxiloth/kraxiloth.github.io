@@ -38,22 +38,32 @@ body {
     background-color: #333333;
     color: #ffffff;
     border: none;
-    padding: 12px 16px;
+    padding: 0;
     border-radius: 8px;
     font-size: 20px;
     cursor: pointer;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .new-turn-btn {
     background-color: #2c5f2e;
     color: #ffffff;
     border: none;
-    padding: 12px 24px;
+    padding: 0 24px;
     border-radius: 8px;
     font-size: 18px;
     cursor: pointer;
     flex: 1;
     max-width: 200px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
 }
 
 .new-turn-btn:hover {
@@ -64,10 +74,14 @@ body {
     background-color: #5f2c2c;
     color: #ffffff;
     border: none;
-    padding: 12px 24px;
+    padding: 0 24px;
     border-radius: 8px;
     font-size: 18px;
     cursor: pointer;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .reset-btn:hover {
@@ -109,6 +123,9 @@ body {
     font-size: 20px;
     cursor: pointer;
     align-self: center;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
 }
 
 .player-avatar {
@@ -180,33 +197,21 @@ body {
     letter-spacing: 1px;
 }
 
-.subsection {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 6px 0;
-}
-
-.subsection span {
-    font-size: 14px;
-    color: #cccccc;
-    width: 60px;
-    text-align: left;
-}
-
 .value {
     font-size: 48px;
-    margin: 10px 0;
     min-height: 60px;
     line-height: 60px;
     overflow: hidden;
+    margin: 10px 0;
+    min-width: 80px;
+    text-align: center;
 }
 
 .value.small {
     font-size: 18px;
     min-height: unset;
     margin: 0;
-    width: 30px;
+    width: 48px;
     text-align: center;
     line-height: normal;
 }
@@ -226,36 +231,194 @@ body {
     font-size: 28px;
     cursor: pointer;
     flex: 1;
-    padding: 12px 0;
     min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .life-btn:hover {
     background-color: #555555;
 }
 
-/* Unused placeholders retained for future use */
-.player-header {}
-.player-initial {}
-.button-row {}
-.player-top {}
-.player-left {}
-.player-right {}
 
-@media (max-width: 600px) {
-    .section h3 {
-        font-size: 14px;
-    }
+/* =============================================================================
+   MANA ROW
+   ============================================================================= */
 
-    .subsection span {
-        font-size: 12px;
-    }
-
-    .value.small {
-        font-size: 16px;
-    }
+.mana-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
 }
 
+.mana-btn {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mana-btn:hover {
+    background-color: #555555;
+}
+
+.mana-label {
+    font-size: 12px;
+    color: #aaaaaa;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+
+.value.mana-value {
+    font-size: 24px;
+    min-height: unset;
+    line-height: normal;
+    margin: 0;
+    min-width: 80px;
+    width: 80px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+
+/* =============================================================================
+   THRESHOLD GRID
+   ============================================================================= */
+
+.threshold-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.threshold-cell button {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.threshold-cell button:hover {
+    background-color: #555555;
+}
+
+.element-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* =============================================================================
+   THRESHOLD POPUP
+   ============================================================================= */
+
+.threshold-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.threshold-pill {
+    background-color: #333333;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 15px;
+    cursor: pointer;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.threshold-pill span {
+    min-width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.threshold-pill:hover {
+    background-color: #444444;
+}
+
+#threshold-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
+}
+
+#threshold-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 201;
+    background-color: #1e1e1e;
+    border: 1px solid #444444;
+    border-radius: 12px;
+    padding: 16px;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 200px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+#threshold-popup-label {
+    font-size: 16px;
+    color: #aaaaaa;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.threshold-popup-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.threshold-popup-controls .life-btn {
+    min-height: 48px;
+}
+
+.threshold-popup-controls .value {
+    font-size: 36px;
+    min-height: 48px;
+    line-height: 48px;
+    margin: 0;
+    min-width: 60px;
+}
 
 /* =============================================================================
    MODAL - SHARED
@@ -304,21 +467,28 @@ body {
     color: #ffffff;
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     font-size: 18px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-change {
     background-color: #444444;
     color: #ffffff;
     border: none;
-    padding: 12px 24px;
+    padding: 0 24px;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     align-self: center;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-change:hover {
@@ -329,10 +499,14 @@ body {
     background-color: #333333;
     color: #aaaaaa;
     border: none;
-    padding: 10px 20px;
+    padding: 0 20px;
     border-radius: 8px;
     font-size: 15px;
     cursor: pointer;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .browser-title {
@@ -373,13 +547,14 @@ body {
 
 #avatar-search {
     width: 100%;
-    padding: 10px;
+    padding: 0 10px;
     background-color: #2a2a2a;
     border: 1px solid #444444;
     border-radius: 8px;
     color: #ffffff;
     font-size: 16px;
     box-sizing: border-box;
+    height: 48px;
 }
 
 #avatar-search::placeholder {
@@ -393,6 +568,7 @@ body {
     font-size: 14px;
     color: #aaaaaa;
     cursor: pointer;
+    min-height: 48px;
 }
 
 .avatar-list {
@@ -408,11 +584,16 @@ body {
     background-color: #2a2a2a;
     border: 1px solid #444444;
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 0 14px;
     cursor: pointer;
     font-size: 15px;
     color: #ffffff;
     text-align: left;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .avatar-list-item:hover {
@@ -466,9 +647,11 @@ body {
     color: #ffffff;
     border: 1px solid #444444;
     border-radius: 8px;
-    padding: 10px;
+    padding: 0 10px;
     font-size: 16px;
     width: 100%;
+    height: 48px;
+    box-sizing: border-box;
 }
 
 
@@ -490,6 +673,7 @@ body {
     background-color: #2a2a2a;
     border-radius: 8px;
     padding: 10px 14px;
+    min-height: 48px;
 }
 
 .dice-label {
@@ -506,8 +690,11 @@ body {
     border-radius: 8px;
     font-size: 22px;
     cursor: pointer;
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dice-count-btn:hover {
@@ -517,7 +704,7 @@ body {
 .dice-count {
     font-size: 22px;
     font-weight: bold;
-    width: 30px;
+    width: 48px;
     text-align: center;
 }
 
@@ -566,4 +753,80 @@ body {
     padding: 10px;
     background-color: #2a2a2a;
     border-radius: 8px;
+}
+
+
+/* =============================================================================
+   RESPONSIVE - SMALL HEIGHT (e.g. iPhone SE, browser chrome visible)
+   ============================================================================= */
+
+@media (max-height: 700px) {
+    .section {
+        margin: 8px 0;
+        padding: 8px;
+    }
+
+    .value {
+        font-size: 32px;
+        min-height: 40px;
+        line-height: 40px;
+        margin: 4px 0;
+    }
+
+    .section h3 {
+        font-size: 12px;
+        margin: 0 0 4px;
+    }
+
+    .mana-btn,
+    .threshold-cell button {
+        width: 44px;
+        height: 44px;
+    }
+
+    .life-btn {
+        min-height: 48px;
+        font-size: 22px;
+    }
+
+    .global-buttons {
+        margin-top: 6px;
+    }
+
+    .new-turn-btn,
+    .reset-btn {
+        height: 44px;
+        font-size: 16px;
+        padding: 0 16px;
+    }
+
+    .settings-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+}
+
+
+/* =============================================================================
+   RESPONSIVE - SMALL WIDTH (e.g. iPhone SE)
+   ============================================================================= */
+
+@media (max-width: 600px) {
+    .section h3 {
+        font-size: 14px;
+    }
+
+    .value.small {
+        font-size: 16px;
+    }
+
+    .mana-label {
+        font-size: 11px;
+    }
+
+    .threshold-label {
+        font-size: 12px;
+        width: 32px;
+    }
 }

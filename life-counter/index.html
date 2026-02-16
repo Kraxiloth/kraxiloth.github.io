@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorcery Life Counter</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0.0">
+    <link rel="stylesheet" href="css/style.css?v=1.0.2">
 </head>
 <body>
 
@@ -13,8 +13,8 @@
 
     <!-- Global controls -->
     <div class="global-buttons">
-        <button class="settings-btn" onclick="openSettings()">⚙️</button>
-        <button class="settings-btn" onclick="openDice()">🎲</button>
+        <button class="settings-btn" onclick="openSettings()">&#9881;&#65039;</button>
+        <button class="settings-btn" onclick="openDice()">&#127922;</button>
         <button class="new-turn-btn" onclick="newTurn()">New Turn</button>
         <button class="reset-btn" onclick="resetGame()">Reset</button>
     </div>
@@ -22,7 +22,7 @@
     <!-- Settings modal -->
     <div class="modal-overlay" id="settings-overlay" onclick="closeSettings()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeSettings()">✕</button>
+            <button class="modal-close" onclick="closeSettings()">&#10005;</button>
             <h3 class="browser-title">Settings</h3>
             <div class="settings-row">
                 <label>Number of Players</label>
@@ -47,7 +47,7 @@
     <!-- Avatar card modal -->
     <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal()">✕</button>
+            <button class="modal-close" onclick="closeModal()">&#10005;</button>
 
             <div id="modal-view-card">
                 <img class="modal-image" id="modal-image" src="" alt="Avatar">
@@ -79,24 +79,24 @@
     <!-- Dice roller modal -->
     <div class="modal-overlay" id="dice-overlay" onclick="closeDice()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeDice()">✕</button>
+            <button class="modal-close" onclick="closeDice()">&#10005;</button>
             <h3 class="browser-title">Dice Roller</h3>
             <div class="dice-controls">
                 <div class="dice-row">
                     <span class="dice-label">D6</span>
-                    <button class="dice-count-btn" onclick="adjustDiceCount('d6', -1)">−</button>
+                    <button class="dice-count-btn" onclick="adjustDiceCount('d6', -1)">&minus;</button>
                     <span class="dice-count" id="count-d6">0</span>
                     <button class="dice-count-btn" onclick="adjustDiceCount('d6', 1)">+</button>
                 </div>
                 <div class="dice-row">
                     <span class="dice-label">D12</span>
-                    <button class="dice-count-btn" onclick="adjustDiceCount('d12', -1)">−</button>
+                    <button class="dice-count-btn" onclick="adjustDiceCount('d12', -1)">&minus;</button>
                     <span class="dice-count" id="count-d12">0</span>
                     <button class="dice-count-btn" onclick="adjustDiceCount('d12', 1)">+</button>
                 </div>
                 <div class="dice-row">
                     <span class="dice-label">D20</span>
-                    <button class="dice-count-btn" onclick="adjustDiceCount('d20', -1)">−</button>
+                    <button class="dice-count-btn" onclick="adjustDiceCount('d20', -1)">&minus;</button>
                     <span class="dice-count" id="count-d20">0</span>
                     <button class="dice-count-btn" onclick="adjustDiceCount('d20', 1)">+</button>
                 </div>
@@ -110,8 +110,20 @@
         </div>
     </div>
 
+    <!-- Threshold popup -->
+    <div id="threshold-backdrop" onclick="closeThresholdPopup()"></div>
+    <div id="threshold-popup">
+        <span id="threshold-popup-label"></span>
+        <div class="threshold-popup-controls">
+            <button class="life-btn" onclick="adjustThresholdPopup(-1)">&minus;</button>
+            <div class="value" id="threshold-popup-value">0</div>
+            <button class="life-btn" onclick="adjustThresholdPopup(1)">+</button>
+        </div>
+        <button class="modal-cancel" onclick="closeThresholdPopup()">Close</button>
+    </div>
+
     <!-- Scripts loaded in dependency order -->
-    <script src="js/players.js?v=1.0.0"></script>
+    <script src="js/players.js?v=1.0.2"></script>
     <script src="js/game.js?v=1.0.0"></script>
     <script src="js/avatars.js?v=1.0.0"></script>
     <script src="js/dice.js?v=1.0.0"></script>

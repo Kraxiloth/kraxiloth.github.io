@@ -10,35 +10,33 @@ function closeSettings() {
     document.getElementById('settings-overlay').classList.remove('active');
 }
 
-// Threshold popup
-let thresholdPopupPlayerIndex = null;
-let thresholdPopupElement = null;
+// =============================================================================
+// SCREEN WAKE LOCK
+// =============================================================================
 
-function openThresholdPopup(event, playerIndex, element) {
-    event.stopPropagation();
-    thresholdPopupPlayerIndex = playerIndex;
-    thresholdPopupElement = element;
+let wakeLock = null;
 
-    const label = element.charAt(0).toUpperCase() + element.slice(1);
-    document.getElementById('threshold-popup-label').innerHTML =
-        `<img src="res/${element}.png" alt="${label}" class="element-icon"> ${label}`;
-    document.getElementById('threshold-popup-value').textContent =
-        players[playerIndex].threshold[element];
-
-    document.getElementById('threshold-popup').style.display = 'flex';
-    document.getElementById('threshold-backdrop').style.display = 'block';
+async function requestWakeLock() {
+    try {
+        if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Wake lock active');
+            
+            wakeLock.addEventListener('release', () => {
+                console.log('Wake lock released');
+            });
+        }
+    } catch (err) {
+        console.error('Wake lock failed:', err);
+    }
 }
 
-function closeThresholdPopup() {
-    document.getElementById('threshold-popup').style.display = 'none';
-    document.getElementById('threshold-backdrop').style.display = 'none';
-    thresholdPopupPlayerIndex = null;
-    thresholdPopupElement = null;
-}
+// Request wake lock when app loads
+requestWakeLock();
 
-function adjustThresholdPopup(amount) {
-    if (thresholdPopupPlayerIndex === null || thresholdPopupElement === null) return;
-    adjustThreshold(thresholdPopupPlayerIndex, thresholdPopupElement, amount);
-    document.getElementById('threshold-popup-value').textContent =
-        players[thresholdPopupPlayerIndex].threshold[thresholdPopupElement];
-}
+// Re-request wake lock when page becomes visible
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && wakeLock === null) {
+        requestWakeLock();
+    }
+});

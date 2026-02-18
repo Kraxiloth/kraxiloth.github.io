@@ -33,8 +33,16 @@ function newTurn() {
 }
 
 function resetGame() {
-    if (confirm("Reset all players to default state?")) {
+    if (confirm("Reset all players to default state? This will clear all game progress.")) {
         players = players.map(player => createPlayer(player.name));
         players.forEach((_, index) => updateDisplay(index));
+        
+        // Reset timers
+        stopTimer();
+        globalTimerStart = null;
+        players.forEach(player => player.timerStart = null);
+        startTimer();
+        
+        saveGameState();
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorcery Life Counter</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0.2">
+    <link rel="stylesheet" href="css/style.css?v=1.1.0">
 </head>
 <body>
 
@@ -24,6 +24,7 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeSettings()">&#10005;</button>
             <h3 class="browser-title">Settings</h3>
+            
             <div class="settings-row">
                 <label>Number of Players</label>
                 <select id="player-count" onchange="handlePlayerCount()">
@@ -35,11 +36,33 @@
                     <option value="6">6 Players</option>
                 </select>
             </div>
+            
             <div class="settings-row">
                 <label>Remove Player</label>
                 <select id="remove-player" onchange="handleRemovePlayer()">
                     <option value="">Select player</option>
                 </select>
+            </div>
+            
+            <div class="settings-row">
+                <label>Timer Mode</label>
+                <select id="timer-mode" onchange="handleTimerModeChange()">
+                    <option value="elapsed">Elapsed Time</option>
+                    <option value="countdown">Countdown</option>
+                </select>
+            </div>
+            
+            <div class="settings-row">
+                <label>Timer Scope</label>
+                <select id="timer-scope" onchange="handleTimerScopeChange()">
+                    <option value="global">Global Timer</option>
+                    <option value="per-player">Per-Player Timer</option>
+                </select>
+            </div>
+            
+            <div class="settings-row">
+                <label>Countdown Duration (minutes)</label>
+                <input type="number" id="timer-duration" value="60" min="1" max="999" onchange="handleTimerDurationChange()">
             </div>
         </div>
     </div>
@@ -110,29 +133,25 @@
         </div>
     </div>
 
-    <!-- Threshold popup -->
-    <div id="threshold-backdrop" onclick="closeThresholdPopup()"></div>
-    <div id="threshold-popup">
-        <span id="threshold-popup-label"></span>
-        <div class="threshold-popup-controls">
-            <button class="life-btn" onclick="adjustThresholdPopup(-1)">&minus;</button>
-            <div class="value" id="threshold-popup-value">0</div>
-            <button class="life-btn" onclick="adjustThresholdPopup(1)">+</button>
-        </div>
-        <button class="modal-cancel" onclick="closeThresholdPopup()">Close</button>
-    </div>
-
     <!-- Scripts loaded in dependency order -->
-    <script src="js/players.js?v=1.0.2"></script>
-    <script src="js/game.js?v=1.0.0"></script>
-    <script src="js/avatars.js?v=1.0.0"></script>
-    <script src="js/dice.js?v=1.0.0"></script>
-    <script src="js/ui.js?v=1.0.0"></script>
+    <script src="js/players.js?v=1.1.0"></script>
+    <script src="js/game.js?v=1.1.0"></script>
+    <script src="js/timer.js?v=1.1.0"></script>
+    <script src="js/avatars.js?v=1.1.0"></script>
+    <script src="js/dice.js?v=1.1.0"></script>
+    <script src="js/ui.js?v=1.1.0"></script>
 
     <script>
         // Initialise the app
+        const stateLoaded = loadGameState();
         renderPlayers();
         updateRemoveDropdown();
+        if (stateLoaded) {
+            startTimer();
+        } else {
+            // First load, start fresh timer
+            startTimer();
+        }
     </script>
 
 </body>

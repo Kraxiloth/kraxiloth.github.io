@@ -1,6 +1,7 @@
 // =============================================================================
 // TIMER
 // =============================================================================
+let timerRunning = false;
 
 function startTimer() {
     const now = Date.now();
@@ -29,6 +30,21 @@ function stopTimer() {
         clearInterval(globalTimerInterval);
         globalTimerInterval = null;
     }
+}
+
+function toggleTimer(playerIndex) {
+    if (timerRunning) {
+        stopTimer();
+        document.querySelectorAll('.timer-control').forEach(btn => {
+            btn.textContent = '▶';
+        });
+    } else {
+        startTimer();
+        document.querySelectorAll('.timer-control').forEach(btn => {
+            btn.textContent = '⏸';
+        });
+    }
+    timerRunning = !timerRunning;
 }
 
 function updateTimerDisplays() {

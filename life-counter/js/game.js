@@ -37,11 +37,31 @@ function resetGame() {
         players = players.map(player => createPlayer(player.name));
         players.forEach((_, index) => updateDisplay(index));
         
-        // Reset timers
+        // Stop and reset timers
         stopTimer();
+        timerRunning = false;
         globalTimerStart = null;
         players.forEach(player => player.timerStart = null);
-        startTimer();
+        
+        // Reset play button icons to play state
+        document.querySelectorAll('.timer-control').forEach(btn => {
+            btn.textContent = '▶';
+        });
+        
+        // Reset timer displays based on mode
+        players.forEach((_, index) => {
+            const timerEl = document.getElementById(`timer${index + 1}`);
+            if (timerEl) {
+                if (timerMode === 'countdown') {
+                    // Show countdown duration
+                    timerEl.textContent = formatTime(timerDuration * 60);
+                } else {
+                    // Show 0:00 for elapsed mode
+                    timerEl.textContent = '0:00';
+                }
+                timerEl.classList.remove('timer-expired');
+            }
+        });
         
         saveGameState();
     }

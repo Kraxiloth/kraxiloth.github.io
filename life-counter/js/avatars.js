@@ -36,6 +36,10 @@ function openAvatarBrowser() {
     document.getElementById('modal-view-card').style.display = 'none';
     document.getElementById('modal-avatar-browser').style.display = 'flex';
     document.getElementById('modal-avatar-browser').style.flexDirection = 'column';
+
+    // Clear search field
+    document.getElementById('avatar-search').value = '';    
+
     clearPreview();
 
     if (avatarList.length > 0) {

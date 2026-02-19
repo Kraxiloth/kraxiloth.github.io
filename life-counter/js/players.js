@@ -34,7 +34,10 @@ function createPlayerPanel(index, player) {
         <div class="player" id="player-${num}" ${rotation}>
             <div class="player-header-section">
                 <h2 class="player-name" id="name${num}" onclick="renamePlayer(${index})">${player.name}</h2>
-                <div class="timer-display" id="timer${num}">0:00</div>
+                <div class="timer-row">
+                    <button class="timer-control" onclick="toggleTimer(${index})" id="timer-btn${num}">▶</button>
+                    <div class="timer-display" id="timer${num}">0:00</div>
+                </div>
             </div>
             <div class="player-avatar">
                 <div class="avatar-card" id="avatar${num}" onclick="openModal(${index})">

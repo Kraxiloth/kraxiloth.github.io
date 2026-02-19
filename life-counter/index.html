@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorcery Life Counter</title>
-    <link rel="stylesheet" href="css/style.css?v=1.1.0">
+    <link rel="stylesheet" href="css/style.css?v=1.1.1">
 </head>
 <body>
 
@@ -134,24 +134,36 @@
     </div>
 
     <!-- Scripts loaded in dependency order -->
-    <script src="js/players.js?v=1.1.0"></script>
-    <script src="js/game.js?v=1.1.0"></script>
-    <script src="js/timer.js?v=1.1.0"></script>
-    <script src="js/avatars.js?v=1.1.0"></script>
-    <script src="js/dice.js?v=1.1.0"></script>
-    <script src="js/ui.js?v=1.1.0"></script>
+    <script src="js/players.js?v=1.1.1"></script>
+    <script src="js/game.js?v=1.1.1"></script>
+    <script src="js/timer.js?v=1.1.1"></script>
+    <script src="js/avatars.js?v=1.1.1"></script>
+    <script src="js/dice.js?v=1.1.1"></script>
+    <script src="js/ui.js?v=1.1.1"></script>
 
     <script>
         // Initialise the app
         const stateLoaded = loadGameState();
         renderPlayers();
         updateRemoveDropdown();
+
+        // Restore avatar images after rendering
         if (stateLoaded) {
-            startTimer();
-        } else {
-            // First load, start fresh timer
-            startTimer();
+            players.forEach((player, index) => {
+                if (player.avatar) {
+                    const avatarCard = document.getElementById(`avatar${index + 1}`);
+                    let img = avatarCard.querySelector('img');
+                    if (!img) {
+                        img = document.createElement('img');
+                        img.onerror = function() { this.style.display = 'none'; };
+                        avatarCard.appendChild(img);
+                    }
+                    img.style.display = '';
+                    img.src = `${IMAGE_BASE_URL}${player.avatar}.png`;
+                }
+            });
         }
+        // Timer is now only started manually via play button
     </script>
 
 </body>

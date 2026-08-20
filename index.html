@@ -1,295 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <!-- Favicons -->
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kraxiloth</title>
-
-  <style>
-    :root{
-      --bg:#0b0d10;
-      --fg:#e6e6e6;
-      --muted:#9aa0a6;
-      --accent:#7fa7ff;
-      --rule:#1a1d22;
-    }
-
-    *{ box-sizing:border-box; margin:0; padding:0; }
-
-    body{
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-      background:var(--bg);
-      color:var(--fg);
-      line-height:1.6;
-    }
-
-    a{ color:var(--accent); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-
-    section{
-      padding:4rem 1.5rem;
-      max-width:1100px;
-      margin:0 auto;
-    }
-
-    /* HERO */
-    .hero{
-      min-height:90vh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-    }
-
-    .hero img{
-      width:220px;
-      max-width:70%;
-      margin-bottom:2rem;
-    }
-
-    .hero h1{
-      letter-spacing:0.4em;
-      font-size:1.6rem;
-      margin-bottom:1rem;
-    }
-
-    .hero p{
-      font-size:1.1rem;
-      color:var(--muted);
-      margin-bottom:2.5rem;
-    }
-
-    .cta{
-      padding:0.75rem 2rem;
-      border:1px solid var(--accent);
-      background:transparent;
-      color:var(--fg);
-      text-transform:uppercase;
-      letter-spacing:0.15em;
-      cursor:pointer;
-    }
-    .cta:hover{ background:var(--accent); color:#000; }
-
-    /* SECTIONS */
-    .music, .collective, .arg{ border-top:1px solid var(--rule); }
-
-    /* MUSIC */
-
-.spotify iframe{
-  width: 100%;
-  height: 360px;      /* 152 (compact) or ~352–380 (album/playlist) */
-  border: 0;
-  border-radius: 12px;
-  display: block;     /* removes tiny inline-gap weirdness */
-}
-
-.release-list{
-  list-style:none;
-  padding-left:0;
-  color:var(--muted);
-  font-size:0.95rem;
-}
-
-.release-list li{
-  margin-bottom:0.5rem;
-}
-
-.release-list a{
-  margin:0 0.25rem;
-}
-
-.other-transmissions {
-  margin-top: 2.5rem;
-}
-
-    .music h2{ margin-bottom:1rem; font-weight:500; }
-    .music p{ max-width:600px; color:var(--muted); margin-bottom:2rem; }
-
-    .music-grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:2rem;
-    }
-
-    .album-art{ max-width:320px; width:100%; height:auto; }
-    .spotify{ max-width:420px; }
-
-    @media (min-width:768px){
-      .music-grid{ grid-template-columns:auto 1fr; align-items:start; }
-    }
-
-    /* COLLECTIVE */
-    .collective h2{ margin-bottom:2rem; font-weight:500; }
-
-    .member{
-      display:flex;
-      align-items:flex-start;
-      gap:1rem;
-      margin-bottom:1.75rem;
-    }
-
-    .member .glyph{
-      width:52px;
-      height:52px;
-      opacity:0.8;
-      flex-shrink:0;
-    }
-
-    .member-text strong{
-      display:block;
-      font-weight:600;
-      margin-bottom:0.15rem;
-    }
-
-    .member-text span{
-      color:var(--muted);
-      font-size:0.95rem;
-    }
-
-    /* ARG */
-    .arg{ color:var(--muted); }
-    details summary{ cursor:pointer; margin-bottom:1rem; }
-    details ul{ list-style:none; padding-left:1rem; }
-    details li{ margin-bottom:0.5rem; }
-
-    /* FOOTER */
-    footer{
-      border-top:1px solid var(--rule);
-      text-align:center;
-      padding:3rem 1.5rem;
-      color:var(--muted);
-      font-size:0.9rem;
-    }
-
-    footer .links a{ margin:0 0.75rem; }
-
-    .footer-monitor{
-      font-style:italic;
-      font-size:0.85rem;
-      color:rgba(255,255,255,0.45);
-      letter-spacing:0.02em;
-      margin-bottom:0.75rem;
-    }
-
-    .footer-monitor .faint{
-      color:rgba(255,255,255,0.18);
-      letter-spacing:0.08em;
-      margin-left:0.1em;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08080b">
+  <meta name="description" content="Kraxiloth - a personal archive of projects, music, gaming milestones and things made along the way.">
+  <title>Kraxiloth - Player. Creator. Collector.</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
+  <a class="skip-link" href="#archive">Skip to archive</a>
 
-  <!-- HERO -->
-  <section class="hero">
-    <img src="Band logo 2026.png" alt="Kraxiloth sigil" />
-    <h1>KRAXILOTH</h1>
-    <p>Intent in. Sound out.</p>
-    <button class="cta" id="listenBtn" type="button">Listen</button>
-  </section>
-
-  <!-- MUSIC -->
-  <section id="music" class="music">
-    <h2>Music</h2>
-    <p>
-      Echoes From the Void (2025)<br />
-      Debut full-length symphonic metal album.
-    </p>
-
-    <div class="music-grid">
-      <div class="spotify">
-        <iframe src="https://open.spotify.com/embed/album/7niPShKKvu89sfDpXEx8GR?utm_source=generator"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"></iframe>
-      </div>
+  <nav class="site-nav" id="nav" aria-label="Primary navigation">
+    <a class="wordmark" href="#home" aria-label="Kraxiloth home">KRAXILOTH<span>.</span></a>
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Open navigation">
+      <span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#work">Works</a>
+      <a href="#archive">Archive</a>
+      <a href="#about">About</a>
     </div>
+  </nav>
 
-<div class="other-transmissions">
-  <h3>Other releases</h3>
-  <ul class="release-list">
-<ul class="release-list">
-  <li>
-    Apex Predator (2025) —
-    <a href="https://open.spotify.com/album/4JLRxwZjfg3wCDM69ED2Ua?si=Ut8j9rTCS0W4mawlxCR89Q">Spotify</a> /
-    <a href="https://www.youtube.com/watch?v=QpHvKOR8OVU&list=PL-kPYtyCybFUElX-muIPO94u9yN1ykr6e">YouTube</a>
-  </li>
-  <li>
-    Terminal Drift (2025) —
-    <a href="https://open.spotify.com/album/0pGgRGfX8fGYTVpOUK8FNy?si=GSbvME-DRQ6pXETGVyFN0A">Spotify</a> / 
-    <a href="https://www.youtube.com/watch?v=uThnntklL-A&list=PL-kPYtyCybFWjT-6wrQu7rajb1SToF3tO">YouTube</a>
-  </li>
-</ul>
-  </ul>
-</div>
-
-
-  </section>
-
-  <!-- COLLECTIVE -->
-  <section class="collective">
-    <h2>The Collective</h2>
-
-    <div class="member">
-      <img class="glyph" src="operator-glyph.png" alt="" />
-      <div class="member-text">
-        <strong>The Operator (Human)</strong>
-        <span>Direction, composition, intent, final decisions.</span>
+  <main>
+    <header class="hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow">A personal archive</p>
+        <h1>KRAXILOTH</h1>
+        <p class="roles">PLAYER <span>/</span> CREATOR <span>/</span> COLLECTOR</p>
+        <p class="intro">Games played. Tools built. Music made. A record of the things worth keeping.</p>
+        <a class="text-link hero-link" href="#work">Enter the archive <span aria-hidden="true">↓</span></a>
       </div>
-    </div>
-
-    <div class="member">
-      <img class="glyph" src="voice-glyph.png" alt="" />
-      <div class="member-text">
-        <strong>The Voice (Suno)</strong>
-        <span>Voice &amp; generative exploration.</span>
+      <div class="hero-art" aria-hidden="true">
+        <img src="Kraxiloth.png" alt="">
       </div>
-    </div>
+      <div class="hero-vignette" aria-hidden="true"></div>
+    </header>
 
-    <div class="member">
-      <img class="glyph" src="mind-glyph.png" alt="" />
-      <div class="member-text">
-        <strong>The Mind (ChatGPT)</strong>
-        <span>Structure, refinement, narrative cohesion.</span>
+    <section class="manifesto reveal" aria-label="Introduction">
+      <p>Not a portfolio. Not a feed.</p>
+      <p class="muted">Just a corner of the internet for things I made, played and decided were worth remembering.</p>
+    </section>
+
+    <section class="work" id="work">
+      <header class="section-heading reveal">
+        <p class="eyebrow">Selected work</p>
+        <h2>Things made along the way.</h2>
+      </header>
+
+      <article class="feature feature-project reveal">
+        <div class="feature-index">01 <span>/</span> PROJECTS</div>
+        <div class="feature-copy">
+          <h3>Sorcery Tools</h3>
+          <p class="feature-lead">Small, practical tools built around <em>Sorcery: Contested Realm</em>.</p>
+          <p>Experiments, utilities and live projects for a game that somehow turned cardboard into a software requirement.</p>
+          <div class="actions">
+            <a class="text-link" href="https://sorcery.no" target="_blank" rel="noopener">Visit sorcery.no <span>↗</span></a>
+          </div>
+        </div>
+        <div class="project-window" aria-label="Sorcery project preview">
+          <div class="window-bar"><span></span><span></span><span></span><b>sorcery.no</b></div>
+          <div class="window-body">
+            <span class="code-kicker">TOOLS / EXPERIMENTS / SOURCE</span>
+            <strong>SORCERY</strong>
+            <div class="rule"></div>
+            <p>CONTested realm utilities</p>
+            <div class="fake-ui"><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="feature feature-music reveal">
+        <div class="feature-index">02 <span>/</span> MUSIC</div>
+        <div class="feature-copy">
+          <p class="small-label">THE KRAXILOTH PROJECT</p>
+          <h3>Intent in.<br>Sound out.</h3>
+          <p class="feature-lead">Original concepts and lyrics transformed into music through generative tools.</p>
+          <div class="actions">
+            <a class="text-link" href="https://www.youtube.com/@Kraxiloth" target="_blank" rel="noopener">YouTube <span>↗</span></a>
+          </div>
+        </div>
+        <div class="track-list" aria-label="Selected tracks">
+          <a href="https://www.youtube.com/watch?v=V9tJIBNyRZs" target="_blank" rel="noopener"><span>01</span><strong>Full Tilt Blackout</strong><i>↗</i></a>
+          <a href="https://www.youtube.com/watch?v=NI_dUTcTau8" target="_blank" rel="noopener"><span>02</span><strong>Drop Dead Gorgeous</strong><i>↗</i></a>
+          <a href="https://www.youtube.com/watch?v=PlfEc0AlVFM" target="_blank" rel="noopener"><span>03</span><strong>Hot Drop</strong><i>↗</i></a>
+          <a href="https://www.youtube.com/watch?v=3616cFcPuFg" target="_blank" rel="noopener"><span>04</span><strong>FOMO Protocol</strong><i>↗</i></a>
+          <a href="https://www.youtube.com/watch?v=QpHvKOR8OVU" target="_blank" rel="noopener"><span>05</span><strong>World's Edge</strong><i>↗</i></a>
+          <a href="https://www.youtube.com/watch?v=g1LbTkbm2V8" target="_blank" rel="noopener"><span>06</span><strong>The Signal Hungers</strong><i>↗</i></a>
+        </div>
+      </article>
+
+      <article class="feature feature-gaming reveal" id="archive">
+        <div class="feature-index">03 <span>/</span> GAMING</div>
+        <div class="feature-copy">
+          <h3>The Archive</h3>
+          <p class="feature-lead">Milestones, challenge runs and screenshots from a lifetime spent pressing buttons with unreasonable determination.</p>
+          <p class="archive-note">Add your screenshots here as individual records rather than a wall of thumbnails. The layout is already prepared for it.</p>
+        </div>
+        <div class="records">
+          <div class="record"><span>APEX LEGENDS</span><strong>Competitive milestones</strong><small>ARCHIVE</small></div>
+          <div class="record"><span>ELDEN RING</span><strong>Challenge runs</strong><small>ARCHIVE</small></div>
+          <div class="record"><span>PATH OF EXILE</span><strong>League achievements</strong><small>ARCHIVE</small></div>
+          <div class="record"><span>OTHER WORLDS</span><strong>Things worth remembering</strong><small>ARCHIVE</small></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="about reveal" id="about">
+      <div>
+        <p class="eyebrow">About</p>
+        <h2>One name.<br>Several obsessions.</h2>
       </div>
-    </div>
-  </section>
+      <div class="about-copy">
+        <p>Kraxiloth is the name I use for the things I create, the games I disappear into, and the projects that survive long enough to become useful.</p>
+        <p>This site is their archive. No algorithm, no feed, no attempt to turn every hobby into a personal brand.</p>
+      </div>
+    </section>
+  </main>
 
-  <!-- ARG -->
-  <section class="arg">
-    <details>
-      <summary>Signal Fragments (for the attuned)</summary>
-      <ul>
-        <li>Fragment I: The Fracture</li>
-        <li>Fragment II: Transmission Burn</li>
-        <li>Fragments III–V [restricted]</li>
-      </ul>
-    </details>
-  </section>
-
-  <!-- FOOTER -->
   <footer>
-    <p class="footer-monitor">We will continue to monitor… <span class="faint">you</span></p>
-    <div class="links">
-      <a href="https://open.spotify.com/artist/1FZyBVkh3swMiIOKlVaV6U?si=KFu2O86QTBqhdxs-ivsH7w">Spotify</a>
-      <a href="https://www.youtube.com/@Kraxiloth">YouTube</a>
+    <a class="wordmark" href="#home">KRAXILOTH<span>.</span></a>
+    <p>PLAYER / CREATOR / COLLECTOR</p>
+    <div class="footer-links">
+      <a href="https://www.youtube.com/@Kraxiloth" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://sorcery.no" target="_blank" rel="noopener">sorcery.no</a>
     </div>
+    <small>© <span id="year"></span> Kraxiloth</small>
   </footer>
 
-  <script>
-    document.getElementById("listenBtn").addEventListener("click", () => {
-      document.getElementById("music").scrollIntoView({ behavior: "smooth" });
-    });
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
-
